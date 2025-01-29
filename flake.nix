@@ -9,22 +9,31 @@
     kickstart-nix-nvim.url = "github:nix-community/kickstart-nix.nvim";
   };
 
-  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, ... }: {
+  outputs =
+    inputs@{
+      nixpkgs,
+      nixpkgs-unstable,
+      home-manager,
+      ...
+    }:
+    {
 
-    nixpkgs.config = { allowUnfree = true; };
-
-    nixosConfigurations.molokoplus = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = {
-        inherit nixpkgs;
-        inherit nixpkgs-unstable;
-        myLib = import ./lib { inherit (nixpkgs) lib; };
+      nixpkgs.config = {
+        allowUnfree = true;
       };
-      modules = [
-        #./hosts/molokoplus/hardware-configuration.nix
-        ./configuration.nix
-        home-manager.nixosModules.home-manager
-      ];
+
+      nixosConfigurations.molokoplus = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {
+          inherit nixpkgs;
+          inherit nixpkgs-unstable;
+          myLib = import ./lib { inherit (nixpkgs) lib; };
+        };
+        modules = [
+          #./hosts/molokoplus/hardware-configuration.nix
+          ./configuration.nix
+          home-manager.nixosModules.home-manager
+        ];
+      };
     };
-  };
 }
