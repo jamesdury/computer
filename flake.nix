@@ -22,18 +22,20 @@
         allowUnfree = true;
       };
 
-      nixosConfigurations.molokoplus = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {
-          inherit nixpkgs;
-          inherit nixpkgs-unstable;
-          myLib = import ./lib { inherit (nixpkgs) lib; };
+      nixosConfigurations = {
+        molokoplus = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = {
+            inherit nixpkgs;
+            inherit nixpkgs-unstable;
+            myLib = import ./lib { inherit (nixpkgs) lib; };
+          };
+          modules = [
+            #./hosts/molokoplus/hardware-configuration.nix
+            ./configuration.nix
+            home-manager.nixosModules.home-manager
+          ];
         };
-        modules = [
-          #./hosts/molokoplus/hardware-configuration.nix
-          ./configuration.nix
-          home-manager.nixosModules.home-manager
-        ];
       };
     };
 }

@@ -4,7 +4,7 @@ let
   kickstart-nvim = pkgs.fetchFromGitHub {
     owner = "nvim-lua";
     repo = "kickstart.nvim";
-    rev = "master"; # You can specify a specific commit hash for 
+    rev = "master"; # You can specify a specific commit hash for
     sha256 = "sha256-h2apbeWuQhPqyy/pwu5TWtfvCWK2tYqSmcdy68rRD0g=";
   };
 

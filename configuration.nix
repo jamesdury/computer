@@ -23,7 +23,7 @@ let
   };
 in
 {
-  
+
   home-manager = homeConfig;
 
   imports = myLib.mapModules ({
@@ -31,20 +31,9 @@ in
       homeConfig
       pkgs
       config
-      lib;
+      lib
+      ;
   }) ./modules;
-
-
-  users.users.ceephax = {
-    extraGroups = [ "wheel" ];
-    isNormalUser = true;
-    home = "/home/ceephax";
-    group = "users";
-    uid = 1000;
-    password = "password";
-  };
-
-  security.polkit.enable = true;
 
   environment.systemPackages =
     with pkgs;
@@ -55,18 +44,31 @@ in
       git
       ripgrep
       zig
+      pkgs.xdg-user-dirs
+      sunshine
     ]
     ++ (with nixpkgs-unstable.legacyPackages.${pkgs.system}; [ ghostty ]);
+
+  users.users.ceephax = {
+    extraGroups = [ "wheel" ];
+    isNormalUser = true;
+    home = "/home/ceephax";
+    group = "users";
+    uid = 1000;
+    password = "password";
+
+    packages = [ pkgs.xdg-user-dirs ];
+  };
+
+  security.sudo.enable = true;
+  # change me
+  users.users.root.initialPassword = "nixos";
+
+  #  networking.hostName = lib.mkDefault config.networking.hostName;
 
   # Enable the gnome-keyring secrets vault.
   # Will be exposed through DBus to programs willing to store secrets.
   services.gnome.gnome-keyring.enable = true;
-
-  # enable sway window manager
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-  };
 
   nix.settings.experimental-features = [
     "nix-command"
